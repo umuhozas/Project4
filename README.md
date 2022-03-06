@@ -86,7 +86,7 @@ def lw_reg(X, y, xnew, kern, tau, intercept):
       output[np.isnan(output)] = g(xnew[np.isnan(output)])
     return output
 ```
-After our local regression model, I am going to define function to boost our current local regression model. For training oue boosted method, I will use X and y that I will define below from our cement dataset.
+After our local regression model, I am going to define function to boost our current local regression model. For training our boosted method, I will use X and y that I will define below from our cement dataset.
 
 ```Python
 def boosted_lwr(X, y, xnew, kern, tau, intercept, model_boosting, nboost):
@@ -197,7 +197,7 @@ Our MSE for Boosted locally weighted regression improved, but the MSE for gradie
 ## LightGBM 
 To finish our Analysis, I am going to apply LightGBM on our concrete data to compare both the performamce time and accuracy of our predictions.
  
-Lightgbm is a gradien boosting framework which is fast distributed and it has a high performance. LightGBM is called light because of its computation power and how it gives results faster. In addition, LightGBM uses less memory when dealing with bug datasets. LightGBM provides high accuracy and is mostly preferred for large datasets compared to small ones because with small datasets, it can lead to overfitting. Overfitting can be minimized by lowering the depth of the tree.
+Lightgbm is a gradient boosting framework which is fast distributed and it has a high performance. LightGBM is called light because of its computation power and how it gives results faster. In addition, LightGBM uses less memory when dealing with big datasets. LightGBM provides high accuracy and is mostly preferred for large datasets compared to small ones because with small datasets, it can lead to overfitting. Overfitting can be minimized by lowering the depth of the tree.
 
 Lightgbm takes different parameters which includes control parameters, core parameters, and Metric parameters. Examples of these include max_depth, leaf minimum number of records, and feature fraction.
 
