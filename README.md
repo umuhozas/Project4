@@ -151,13 +151,14 @@ mse(ytest, yhat)
 
 ```
 mse (ytest, yhat) = 153.18129890828084
+
 This MSE is pretty big, I am going to try gradient boosting on our data and see if it makes an improvement.
 
 ```Python
 import xgboost as xgb
 ```
 
-Let's tru a nested cross-validation for better comparison
+Let's try a nested cross-validation for better comparison
 
 ```Python
 # we want more nested cross-validations
@@ -188,20 +189,37 @@ print('The Cross-validated Mean Squared Error for BLWR is : '+str(np.mean(mse_bl
 print('The Cross-validated Mean Squared Error for XGB is : '+str(np.mean(mse_xgb)))
 ```
 The Cross-validated Mean Squared Error for BLWR is : 150.67848506482736
+
 The Cross-validated Mean Squared Error for XGB is : 151.33740690420456
 
 Our MSE for Boosted locally weighted regression improved, but the MSE for gradient boosting is not better.
 
-##LightGBM 
+## LightGBM 
+To finish our Analysis, I am going to apply LightGBM on our concrete data to compare both the performamce time and accuracy of our predictions.
+ 
+Lightgbm is a gradien boosting framework which is fast distributed and it has a high performance. LightGBM is called light because of its computation power and how it gives results faster. In addition, LightGBM uses less memory when dealing with bug datasets. LightGBM provides high accuracy and is mostly preferred for large datasets compared to small ones because with small datasets, it can lead to overfitting. Overfitting can be minimized by lowering the depth of the tree.
+
+Lightgbm takes different parameters which includes control parameters, core parameters, and Metric parameters. Examples of these include max_depth, leaf minimum number of records, and feature fraction.
+
+Let's import Lightgbm and check it's performance on our dataset
 
 ```Python
+import lightgbm as lgb
+gbm = lgb.LGBMRegressor(objective='regression',num_leaves=100,learning_rate=0.2,n_estimators=1500)
+gbm.fit(xtrain, ytrain,
+    eval_set=[(xtest, ytest)],
+    eval_metric='l2_root',
+    early_stopping_rounds=10)
+y_pred = gbm.predict(xtest, num_iteration=gbm.best_iteration_)
+accuracy = round(gbm.score(xtrain, ytrain)*100,2)
+gbm_mse = mse(ytest,y_pred)
 
+gbm_mse
 ```
 
-```Python
+gbm_mse = 149.9291289947972
 
-```
+Lightgbm's performance is faster and it improved the accuracy of our predictions.
 
-```Python
-
+Overall, Lightgbm has the best performance compared to double boosting and gradient boosting. In addition the runtime was much faster compared to all other methods.
 
